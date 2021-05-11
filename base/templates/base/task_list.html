@@ -1,0 +1,65 @@
+{% extends 'base/main.html' %}
+{% block content %}
+<div class="header-bar">
+    <div>
+        <h1>Hello, {{request.user|title}} &#128640;</h1>
+        <h3 style="margin: 0;">You have <i>{{count}}</i> incomplete task{{count|pluralize:"s"}} &#128064;</h3>
+    </div>
+    {% if request.user.is_authenticated %}
+  <a href="{% url 'logout' %}">Logout &#128075;&#127997;</a>
+{% else %}
+{% endif %}
+</div>
+
+
+<div id="search-add-wrapper">
+    <form method="GET" style="margin-top: 20px; display: flex;">
+        <input type="text" name="search-area" value="{{search_input}}">
+        <input class="button"type="submit", value="search">
+    </form>
+    <a id="add-link" href="{% url 'task-create' %}">&#x2b;</a>
+
+</div>
+
+<div class="task-items-wrapper">
+    {% for task in tasks %}
+    <div class="task-wrapper">
+        {% if task.complete %}
+        <div class="task-title">
+            <div class="task-complete-icon">
+                <i><s><a href="{% url 'task-update' task.id %}">{{task}}</a></s></i>
+            </div>
+        </div>
+        <a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
+        {% else %}
+        <div class="task-title">
+            <div class="task-incomplete-icon"> </div>
+                <a href="{% url 'task-update' task.id %}">{{task}}</a>
+        </div>
+        <a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
+        {% endif %}
+        
+    </div>
+
+    {% empty %}
+    <h3>No Items in list</h3>
+    {% endfor %}
+</div>
+<style>
+    .foot{
+        font-size: 15px;
+        color:brown;
+    }
+    .foot a{
+        text-decoration: none;
+        color: goldenrod;
+    }
+</style>
+<footer class="foot">
+    <strong>
+    <center> &#9994;&#127997; Built with love by <a href="https://edemgold.netlify.app/">Edem Gold</a> <a href="https://www.dennisivy.com/">...Dennis Ivy</a>&#x2122;
+    </center>
+    </strong>
+</footer>
+{% endblock content %}
+
